@@ -31,7 +31,7 @@ pipeline {
         stage('Training model') {
             steps {
                 sh '''
-                    python train.py --img 20 --batch 1 --epochs 1 --data nuti-competitor-products-5/data.yaml --weights yolov5l.pt
+                    python train.py --img 480 --batch 1 --epochs 1 --data mlops-demo-project-1/data.yaml --weights yolov5l.pt
                 '''
             }
 
