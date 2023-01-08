@@ -20,6 +20,7 @@ pipeline {
             steps {
                 sh '''
                     python --version
+                    ls
                     python initial_data/runs.py
                 '''
                 
