@@ -1,5 +1,5 @@
 from roboflow import Roboflow
-from initial_data.config import *
+from config import *
 
 rf = Roboflow(api_key=API_KEY)
 project = rf.workspace().project(DATA_FOLDER)
