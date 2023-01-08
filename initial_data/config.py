@@ -1,6 +1,6 @@
 API_KEY = "Zk1BC6WNlwGe7i2evhTG"
 WORKSPACE = "personal-d8mlf"
-DATA_FOLDER = "mlops-demo-project"
+DATA_FOLDER = "mlops-demo-project-uqs48"
 DATASET = 'yolov5'
 VERSION = "1"
 
