@@ -49,9 +49,8 @@ pipeline {
         }
         stage('Training model') {
             steps {
-                sh "echo --img ${params.IMG} --batch ${params.BATCH} --epochs ${params.EPOCH} --data ${params.DATA_PATH}/data.yaml --weights ${params.WEIGHT}"
+                sh "python train.py --img ${params.IMG} --batch ${params.BATCH} --epochs ${params.EPOCH} --data ${params.DATA_PATH}/data.yaml --weights ${params.WEIGHT}"
             }
-            // python train.py
 
         }
 
