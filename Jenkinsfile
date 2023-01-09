@@ -20,13 +20,17 @@ pipeline {
             steps {
                 sh '''
                     python --version
-                    ls
                     python initial_data/runs.py
                 '''
                 
                 // script {
 
                 // }
+            }
+        }
+        stage('check'){
+            steps {
+                sh ''' ls '''
             }
         }
         stage('Training model') {
