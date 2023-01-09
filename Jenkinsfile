@@ -43,6 +43,11 @@ pipeline {
                 echo "build"
             }
         }
+        post {
+            always {
+                cleanWs()
+            }
+        }
 
     }
 }
