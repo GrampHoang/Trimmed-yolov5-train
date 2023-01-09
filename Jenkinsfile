@@ -36,7 +36,7 @@ pipeline {
         stage('Training model') {
             steps {
                 sh '''
-                    python train.py --img 480 --batch 1 --epochs 1 --data MLOps-demo-project-1/data.yaml --weights yolov5l.pt
+                    python train.py --img 480 --batch 1 --epochs 1 --data mlops-demo-project-1/data.yaml --weights yolov5l.pt
                 '''
             }
 
