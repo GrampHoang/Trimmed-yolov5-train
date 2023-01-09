@@ -48,7 +48,7 @@ pipeline {
         }
         stage('Training model') {
             steps {
-                sh "echo --img ${params.IPENSION_BUILD_NUMBER} --batch +${params.IPENSION_BUILD_NUMBER} --epochs ${params.IPENSION_BUILD_NUMBER} --data ${params.IPENSION_BUILD_NUMBER}/data.yaml --weights yolov5l.pt"
+                sh "echo --img ${params.IPENSION_BUILD_NUMBER} --batch ${params.IPENSION_BUILD_NUMBER} --epochs ${params.IPENSION_BUILD_NUMBER} --data ${params.IPENSION_BUILD_NUMBER}/data.yaml --weights yolov5l.pt"
             }
             // python train.py
 
