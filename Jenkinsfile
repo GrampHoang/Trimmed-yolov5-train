@@ -55,9 +55,6 @@ pipeline {
         }
 
         stage('Build torchserve image'){
-            agent {
-                label 'build'
-            }
             steps{
                 // script {
                 // dockerImage = docker.build("hoangchieng/my-test:${env.BUILD_ID}","./deploy")
