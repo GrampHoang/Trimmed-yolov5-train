@@ -62,7 +62,8 @@ pipeline {
                 // script {
                 // dockerImage = docker.build("hoangchieng/my-test:${env.BUILD_ID}","./deploy")
                 // }
-                sh "docker build -t hoangchieng/nodeapp_test:latest ./deploy"
+                // sh "docker build -t hoangchieng/nodeapp_test:latest ./deploy"
+                sh "ls"
             }
         }
 
