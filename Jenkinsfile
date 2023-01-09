@@ -4,7 +4,7 @@ pipeline {
     agent {
         docker {
             // image 'ultralytics/yolov5:latest'
-            image 'hoangchieng282/mlops_image:v1'
+            image 'hoangchieng/mlops_image:v1'
             args '--ipc=host'
         }
     }
@@ -55,8 +55,20 @@ pipeline {
         }
 
         stage('Build torchserve image'){
-            steps {
-                echo "build"
+            steps{
+                script {
+                dockerImage = docker.build("hoangchieng/my-test:${env.BUILD_ID}","./deploy")
+                }
+            }
+        }
+
+        stage('Deploy Image') {
+            steps{
+                script {
+                    docker.withRegistry( '', "DockerHubCred" ) {
+                        dockerImage.push()
+                    }
+                }
             }
         }
 
