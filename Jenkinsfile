@@ -1,5 +1,21 @@
 #!/usr/bin/env groovy
 
+def dockerBuild(String branch, String stageName, String stageResult = false, String propagate = true) {
+    try {
+        // Launch the job that builds iPension Suite
+        build job: branch,
+                propagate: propagate
+        stageResult = true
+        return stageResult
+    }
+    catch (Exception e) {
+        unstable(stageName + " failed!")
+        currentBuild.result = 'FAILURE'
+        stageResult = false
+        return stageResult
+    }
+}
+
 pipeline {
     agent {
         docker {
@@ -22,11 +38,14 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '10'))
     }
 
-    // environment {
-    //     // Copy the Jenkins build number of Suite-Build job into a global iPension environment variable
-    //     // IPENSION_BUILD_NUMBER = "${env.BUILD_NUMBER}"
+    environment {
+        // Copy the Jenkins build number of Suite-Build job into a global iPension environment variable
+        // IPENSION_BUILD_NUMBER = "${env.BUILD_NUMBER}"
 
-    // }
+        // Define default job parameters
+        propagate = true
+
+    }
 
     stages {
         
@@ -56,26 +75,12 @@ pipeline {
 
         stage('Build torchserve image'){
             steps{
-                // script {
-                // dockerImage = docker.build("hoangchieng/my-test:${env.BUILD_ID}","./deploy")
-                // }
-                // sh "docker build -t hoangchieng/nodeapp_test:latest ./deploy"
-                sh "ls"
+                script {
+                    dockerBuild('build_mlops_image/main',"${STAGE_NAME}")
+                }
+                
             }
         }
-
-        // stage('Deploy Image') {
-        //     agent {
-        //         label 'build'
-        //     }
-        //     steps{
-        //         script {
-        //             docker.withRegistry( '', "DockerHubCred" ) {
-        //                 dockerImage.push()
-        //             }
-        //         }
-        //     }
-        // }
 
     }
         post {
