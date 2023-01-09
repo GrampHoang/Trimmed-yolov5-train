@@ -59,24 +59,25 @@ pipeline {
                 label 'build'
             }
             steps{
-                script {
-                dockerImage = docker.build("hoangchieng/my-test:${env.BUILD_ID}","./deploy")
-                }
+                // script {
+                // dockerImage = docker.build("hoangchieng/my-test:${env.BUILD_ID}","./deploy")
+                // }
+                sh "docker build -t hoangchieng/nodeapp_test:latest ./deploy"
             }
         }
 
-        stage('Deploy Image') {
-            agent {
-                label 'build'
-            }
-            steps{
-                script {
-                    docker.withRegistry( '', "DockerHubCred" ) {
-                        dockerImage.push()
-                    }
-                }
-            }
-        }
+        // stage('Deploy Image') {
+        //     agent {
+        //         label 'build'
+        //     }
+        //     steps{
+        //         script {
+        //             docker.withRegistry( '', "DockerHubCred" ) {
+        //                 dockerImage.push()
+        //             }
+        //         }
+        //     }
+        // }
 
     }
         post {
