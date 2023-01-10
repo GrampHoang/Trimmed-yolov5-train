@@ -75,13 +75,21 @@ pipeline {
 
         }
 
-        stage('Build torchserve image'){
-            steps{
-                script {
-                    sh ""
-                    dockerBuild('build_mlops_image/main',"${STAGE_NAME}","${MLOPS_TRAIN_NUMBER}")
-                }
+        // stage('Build torchserve image'){
+        //     steps{
+        //         script {
+        //             dockerBuild('build_mlops_image/main',"${STAGE_NAME}","${MLOPS_TRAIN_NUMBER}")
+        //         }
                 
+        //     }
+        // }
+
+        stage("Push training result to model store"){
+            steps {
+                script {
+                    sh "pip install pymongo"
+                    sh "python store/insertFile.py "${ARCHIV}""
+                }
             }
         }
 

@@ -1,8 +1,8 @@
 import pymongo
 import sys
 import os
-from bson.binary import Binary
-from datetime import datetime
+# from bson.binary import Binary
+# from datetime import datetime
 import shutil
 
 client = pymongo.MongoClient(
