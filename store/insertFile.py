@@ -16,7 +16,9 @@ binDate = now.year*10000000000 + now.month * 100000000 + now.day * 1000000 + now
 current_time = now.strftime("%d/%m/%Y-%H:%M:%S")
 
 filePath = sys.argv[1]
+print(filePath)
 with open(filePath, "rb") as f:
   encoded = Binary(f.read())  
 x = mycol.insert_one({"filePath": filePath , "fileName": filePath.split("/")[-1], "file": encoded, "date": current_time, "binDate": binDate})
+print(x)
 
