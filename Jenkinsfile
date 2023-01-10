@@ -87,7 +87,7 @@ pipeline {
         stage("Push training result to model store"){
             steps {
                 script {
-                    sh "python store/insertFile.py "${ARCHIV}""
+                    sh "python store/insertFile.py ${ARCHIV}"
                 }
             }
         }
