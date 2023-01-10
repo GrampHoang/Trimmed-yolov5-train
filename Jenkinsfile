@@ -65,7 +65,7 @@ pipeline {
             post {
                 success {
                     script { 
-                        tar file: 'runs.zip', archive: true, dir: 'runs' 
+                        tar file: 'runs.tar.gz', archive: true, dir: 'runs' 
                     }
                 }
             }
