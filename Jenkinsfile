@@ -69,7 +69,7 @@ pipeline {
             post {
                 success {
                     script { 
-                        tar file: 'runs.tar.gz', archive: true, dir: 'runs' 
+                        tar file: 'runs_${MLOPS_TRAIN_NUMBER}.tar.gz', archive: true, dir: 'runs' 
                     }
                 }
             }
@@ -79,6 +79,7 @@ pipeline {
         stage('Build torchserve image'){
             steps{
                 script {
+                    sh ""
                     dockerBuild('build_mlops_image/main',"${STAGE_NAME}","${MLOPS_TRAIN_NUMBER}")
                 }
                 
