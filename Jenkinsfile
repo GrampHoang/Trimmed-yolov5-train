@@ -55,20 +55,19 @@ pipeline {
                     python --version
                     python initial_data/runs.py
                 '''
-                
-                // script {
+            }
+        }
 
-                // }
-            }
-        }
-        stage('check'){
-            steps {
-                sh ''' ls '''
-            }
-        }
         stage('Training model') {
             steps {
                 sh "python train.py --img ${params.IMG} --batch ${params.BATCH} --epochs ${params.EPOCH} --data ${params.DATA_PATH}/data.yaml --weights ${params.WEIGHT}"
+            }
+            post {
+                success {
+                    script { 
+                        tar file: 'runs.zip', archive: true, dir: 'runs' 
+                    }
+                }
             }
 
         }
