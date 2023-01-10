@@ -87,7 +87,7 @@ pipeline {
         stage("Push training result to model store"){
             steps {
                 script {
-                    sh "pip install pymongo"
+                    sh "sudo pip install pymongo"
                     sh "python store/insertFile.py "${ARCHIV}""
                 }
             }
