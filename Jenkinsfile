@@ -1,9 +1,12 @@
 #!/usr/bin/env groovy
 
-def dockerBuild(String branch, String stageName, String stageResult = false, String propagate = true) {
+def dockerBuild(String branch, String stageName,String trainNumber, String stageResult = false, String propagate = true) {
     try {
         // Launch the job that builds iPension Suite
         build job: branch,
+                parameters: [
+                    string(name: 'TRAINNUMBER', value: trainNumber)
+                ],
                 propagate: propagate
         stageResult = true
         return stageResult
@@ -40,7 +43,7 @@ pipeline {
 
     environment {
         // Copy the Jenkins build number of Suite-Build job into a global iPension environment variable
-        // IPENSION_BUILD_NUMBER = "${env.BUILD_NUMBER}"
+        MLOPS_TRAIN_NUMBER = "${env.BUILD_NUMBER}"
 
         // Define default job parameters
         propagate = true
@@ -76,7 +79,7 @@ pipeline {
         stage('Build torchserve image'){
             steps{
                 script {
-                    dockerBuild('build_mlops_image/main',"${STAGE_NAME}")
+                    dockerBuild('build_mlops_image/main',"${STAGE_NAME}","${MLOPS_TRAIN_NUMBER}")
                 }
                 
             }
