@@ -53,6 +53,7 @@ pipeline {
             steps {
                 sh '''
                     python --version
+                    pip list -v
                     python initial_data/runs.py
                 '''
             }
