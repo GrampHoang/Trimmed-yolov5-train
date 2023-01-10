@@ -23,7 +23,7 @@ pipeline {
     agent {
         docker {
             // image 'ultralytics/yolov5:latest'
-            image 'hoangchieng/mlops_image:v2'
+            image 'hoangchieng/mlops_image:v3'
             args '--ipc=host'
         }
     }
@@ -87,7 +87,6 @@ pipeline {
         stage("Push training result to model store"){
             steps {
                 script {
-                    sh "sudo pip install pymongo"
                     sh "python store/insertFile.py "${ARCHIV}""
                 }
             }
