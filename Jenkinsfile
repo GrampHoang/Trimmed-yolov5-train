@@ -89,7 +89,7 @@ pipeline {
             steps {
                 script {
                     sh "ls"
-                    sh "python store/insertFile.py --nodelName ${params.MODEL_NAME} --weightFilePath ${ARCHIV} --img ${params.IMG} --batch ${params.BATCH} --epochs ${params.EPOCH}  --version ${MLOPS_TRAIN_NUMBER}"
+                    sh "python store/insertFile.py --modelName ${params.MODEL_NAME} --weightFilePath ${ARCHIV} --img ${params.IMG} --batch ${params.BATCH} --epochs ${params.EPOCH}  --version ${MLOPS_TRAIN_NUMBER}"
                 }
             }
         }
