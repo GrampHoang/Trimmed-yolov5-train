@@ -84,7 +84,7 @@ pipeline {
                         "files": [
                             {
                                 "pattern": "${ARCHIV}", 
-                                "target": "mlops-trained-model/latest.tar.gz"
+                                "target": "mlops-trained-model/${MODEL_NAME}/latest.tar.gz"
                             }
                         ]
                     }"""
