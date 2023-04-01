@@ -75,10 +75,20 @@ pipeline {
             }
         }
 
-        stage("Push training result to model store"){
+
+        stage('Upload model and results to Artifactory') {
             steps {
-                script {
-                    sh "ls"                }
+                rtUpload (
+                    serverId: 'my-artifactory-server', 
+                    spec: """{
+                        "files": [
+                            {
+                                "pattern": "${ARCHIV}", 
+                                "target": "mlops-trained-model/${latest}.tar.gz"
+                            }
+                        ]
+                    }"""
+                )
             }
         }
 
