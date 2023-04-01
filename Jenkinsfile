@@ -79,12 +79,12 @@ pipeline {
         stage('Upload model and results to Artifactory') {
             steps {
                 rtUpload (
-                    serverId: 'my-artifactory-server', 
+                    serverId: 'Jfrog-mlops-model-store', 
                     spec: """{
                         "files": [
                             {
                                 "pattern": "${ARCHIV}", 
-                                "target": "mlops-trained-model/${latest}.tar.gz"
+                                "target": "mlops-trained-model/latest.tar.gz"
                             }
                         ]
                     }"""
