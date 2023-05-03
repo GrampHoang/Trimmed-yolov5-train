@@ -87,7 +87,7 @@ pipeline {
                         "files": [
                             {
                                 "pattern": "${ARCHIV}", 
-                                "target": "mlops-trained-model/${MODEL_NAME}/${MY_DATE_TIME}.tar.gz"
+                                "target": "mlops-trained-models/${MODEL_NAME}/${MY_DATE_TIME}.tar.gz"
                             }
                         ]
                     }"""
