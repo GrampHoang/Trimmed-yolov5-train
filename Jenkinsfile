@@ -46,7 +46,6 @@ pipeline {
         // Copy the Jenkins build number of Suite-Build job into a global iPension environment variable
         MLOPS_TRAIN_NUMBER = "${env.BUILD_NUMBER}"
         ARCHIV = "${params.MODEL_NAME}"+'.tar.gz'
-        VERSION =$(date +%d%m%y%H)
         // Define default job parameters
         propagate = true
 
@@ -79,17 +78,21 @@ pipeline {
 
         stage('Upload model and results to Artifactory') {
             steps {
-                rtUpload (
+                script {
+                    MY_DATE_TIME = sh(returnStdout: true, script: 'date +%d%m%y%H').trim()
+
+                    rtUpload (
                     serverId: 'Jfrog-mlops-model-store', 
                     spec: """{
                         "files": [
                             {
                                 "pattern": "${ARCHIV}", 
-                                "target": "mlops-trained-model/${MODEL_NAME}/${VERSION}.tar.gz"
+                                "target": "mlops-trained-model/${MODEL_NAME}/${MY_DATE_TIME}.tar.gz"
                             }
                         ]
                     }"""
                 )
+                }
             }
         }
 
