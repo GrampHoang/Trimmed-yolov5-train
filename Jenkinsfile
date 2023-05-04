@@ -29,7 +29,7 @@ pipeline {
     }
 
     parameters {
-        string(name: 'MODEL_NAME', description: 'The name for the model', required)
+        string(name: 'MODEL_NAME', description: 'The name for the model')
         string(name: 'IMG', description: 'The image size for training. Example 480', defaultValue: "480")
         string(name: 'BATCH', description: 'The number to build at a time. Example 1', defaultValue: "1")
         string(name: 'EPOCH', description: 'The number of training for model. Example 1', defaultValue: "1")
