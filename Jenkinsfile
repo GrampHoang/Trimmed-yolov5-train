@@ -82,16 +82,28 @@ pipeline {
                     MY_DATE_TIME = sh(returnStdout: true, script: 'date +%d%m%y%H').trim()
 
                     rtUpload (
-                    serverId: 'Jfrog-mlops-model-store', 
-                    spec: """{
-                        "files": [
-                            {
-                                "pattern": "${ARCHIV}", 
-                                "target": "mlops-trained-models/${MODEL_NAME}/${MY_DATE_TIME}.tar.gz"
-                            }
-                        ]
-                    }"""
-                )
+                        serverId: 'Jfrog-mlops-model-store', 
+                        spec: """{
+                            "files": [
+                                {
+                                    "pattern": "${ARCHIV}", 
+                                    "target": "mlops-trained-models/${MODEL_NAME}/${MY_DATE_TIME}.tar.gz"
+                                }
+                            ]
+                        }"""
+                    )
+
+                    rtUpload (
+                        serverId: 'Jfrog-mlops-model-store', 
+                        spec: """{
+                            "files": [
+                                {
+                                    "pattern": "${ARCHIV}", 
+                                    "target": "mlops-trained-models/${MODEL_NAME}/latest.tar.gz"
+                                }
+                            ]
+                        }"""
+                    )
                 }
             }
         }
