@@ -53,6 +53,18 @@ pipeline {
 
     stages {
         
+        stage("Precheck model version"){
+            steps {
+                script {
+                    echo "Validating parameters..."
+                    if (!params.MODEL_NAME?.trim()) {
+                        error "MODEL_NAME is a mandatory parameter"
+                        return
+                    }
+                }
+            }
+        }
+
         stage('Initial training data') {
             steps {
                 sh '''
