@@ -11,7 +11,7 @@ parser = argparse.ArgumentParser()
 
 
 # python GetModel.py --modelName testmodel
-# Ket qua luu trong file versionList.json
+# Kết quả lưu trong file versionList.json, ngay trong folder này luôn
 
 
 parser.add_argument("--modelName", help="Add model name you want to get")
