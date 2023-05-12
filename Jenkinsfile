@@ -116,6 +116,8 @@ pipeline {
                             ]
                         }"""
                     )
+
+                    sh "python ./mongo_config/InsertModel.py --resultFilePath ./runs/train/exp/opt.yaml --modelName ${MODEL_NAME} --img ${params.IMG} --batch ${params.BATCH} --epochs ${params.EPOCH} --version ${MY_DATE_TIME}"
                 }
             }
         }
