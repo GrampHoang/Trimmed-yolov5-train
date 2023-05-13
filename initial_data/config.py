@@ -4,6 +4,12 @@ DATA_FOLDER = "mlops-demo-project-uqs48"
 DATASET = 'yolov5'
 VERSION = "1"
 
+!pip install roboflow
+
+from roboflow import Roboflow
+rf = Roboflow(api_key="Zk1BC6WNlwGe7i2evhTG")
+project = rf.workspace("personal-d8mlf").project("mlops_member")
+dataset = project.version(2).download("yolov5")
 
 #!python train.py --img 480 --batch 1 --epochs 1 --data /DATA_FOLDER + "-" + VERSION/data.yaml --weights yolov5l.pt
 
@@ -14,3 +20,4 @@ VERSION = "1"
 # weights: file trong so, su dung yolov5l.pt co san trong repo
 
 #Ngoai ra con nhieu param nua co the tham khao trong train.py
+
