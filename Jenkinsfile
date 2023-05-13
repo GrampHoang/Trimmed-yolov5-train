@@ -37,7 +37,7 @@ pipeline {
         string(name: 'WEIGHT', description: 'The weight to start traing from. Example yolov5l.pt', defaultValue: "yolov5n.pt")
     }
     options {
-        timeout(time: 1, unit: 'HOURS')
+        timeout(time: 22, unit: 'HOURS')
         timestamps()
         buildDiscarder(logRotator(numToKeepStr: '10'))
     }
@@ -53,7 +53,7 @@ pipeline {
 
     stages {
         
-        stage("Precheck model version"){
+        stage("Precheck pipeline parameters"){
             steps {
                 script {
                     echo "Validating parameters..."
