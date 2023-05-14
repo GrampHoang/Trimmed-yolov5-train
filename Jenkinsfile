@@ -33,8 +33,12 @@ pipeline {
         string(name: 'IMG', description: 'The image size for training. Example 480', defaultValue: "480")
         string(name: 'BATCH', description: 'The number to build at a time. Example 1', defaultValue: "1")
         string(name: 'EPOCH', description: 'The number of training for model. Example 1', defaultValue: "1")
-        string(name: 'DATA_PATH', description: 'The path to data folder. Example mlops-demo-project-1', defaultValue: "mlops-demo-project-1")
         string(name: 'WEIGHT', description: 'The weight to start traing from. Example yolov5l.pt', defaultValue: "yolov5n.pt")
+        string(name: 'API_KEY', description: 'The API value of dataset from Roboflow')
+        string(name: 'WORKSPACE', description: 'Workspace name of dataset from Roboflow')
+        string(name: 'DATA_FOLDER', description: 'Data folder of dataset from Roboflow')
+        string(name: 'VERSION', description: 'Version of dataset from Roboflow')
+        string(name: 'DATASET', description: 'Dataset name from Roboflow')
     }
     options {
         timeout(time: 22, unit: 'HOURS')
@@ -69,14 +73,14 @@ pipeline {
             steps {
                 sh '''
                     python --version
-                    python initial_data/runs.py
+                    python initial_data/runs.py --API_KEY ${params.API_KEY} --WORKSPACE ${params.WORKSPACE} --DATA_FOLDER ${params.DATA_FOLDER} --VERSION ${params.VERSION} --DATASET ${params.DATASET}
                 '''
             }
         }
 
         stage('Training model') {
             steps {
-                sh "python train.py --img ${params.IMG} --batch ${params.BATCH} --epochs ${params.EPOCH} --data ${params.DATA_PATH}/data.yaml --weights ${params.WEIGHT}"
+                sh "python train.py --img ${params.IMG} --batch ${params.BATCH} --epochs ${params.EPOCH} --data ${params.DATA_FOLDER}-${params.VERSION}/data.yaml --weights ${params.WEIGHT}"
             }
             post {
                 success {
