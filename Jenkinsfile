@@ -77,10 +77,7 @@ pipeline {
             post {
                 success {
                     script { 
-                        unzip zipFile: 'roboflow.zip', dir: 'roboflow', quiet: true
-                        sh '''
-                            chmod -R 777 roboflow
-                        '''
+                        sh "unzip roboflow.zip && chmod -R 777 .; rm roboflow.zip"
                     }
                 }
             }
