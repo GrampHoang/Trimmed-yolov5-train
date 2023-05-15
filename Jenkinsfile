@@ -34,11 +34,7 @@ pipeline {
         string(name: 'BATCH', description: 'The number to build at a time. Example 1', defaultValue: "1")
         string(name: 'EPOCH', description: 'The number of training for model. Example 1', defaultValue: "1")
         string(name: 'WEIGHT', description: 'The weight to start traing from. Example yolov5l.pt', defaultValue: "yolov5n.pt")
-        string(name: 'API_KEY', description: 'The API value of dataset from Roboflow')
-        string(name: 'WORKSPACE', description: 'Workspace name of dataset from Roboflow')
-        string(name: 'DATA_FOLDER', description: 'Data folder of dataset from Roboflow')
-        string(name: 'VERSION', description: 'Version of dataset from Roboflow')
-        string(name: 'DATASET', description: 'Dataset name from Roboflow')
+        string(name: 'DATA_URL', description: 'The URL to load the dataset from Roboflow')
     }
     options {
         timeout(time: 22, unit: 'HOURS')
@@ -72,17 +68,21 @@ pipeline {
         stage('Initial training data') {
             steps {
                 sh "python --version"
-                sh "python initial_data/runs.py --API_KEY ${params.API_KEY} --WORKSPACE ${params.WORKSPACE} --DATA_FOLDER ${params.DATA_FOLDER} --VERSION ${params.VERSION} --DATASET ${params.DATASET}"
-
+                sh "curl -f -L ${params.DATA_URL} > roboflow.zip"
+            }
+            post {
+                success {
+                    script { 
+                        unzip zipFile 'roboflow.zip', dir: 'roboflow' 
+                    }
+                }
             }
         }
 
         stage('Training model') {
             steps {
                 script {
-                    def DATA_FOLDERR = params.DATA_FOLDER.split('-')[0]
-                    sh "echo ${DATA_FOLDERR}"
-                    sh "python train.py --img ${params.IMG} --batch ${params.BATCH} --epochs ${params.EPOCH} --data ${params.DATA_FOLDERR}-${params.VERSION}/data.yaml --weights ${params.WEIGHT}"
+                    sh "python train.py --img ${params.IMG} --batch ${params.BATCH} --epochs ${params.EPOCH} --data roboflow/data.yaml --weights ${params.WEIGHT}"
                 }
             }
             post {
