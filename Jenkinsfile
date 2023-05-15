@@ -71,10 +71,9 @@ pipeline {
 
         stage('Initial training data') {
             steps {
-                sh '''
-                    python --version
-                    python initial_data/runs.py --API_KEY ${params.API_KEY} --WORKSPACE ${params.WORKSPACE} --DATA_FOLDER ${params.DATA_FOLDER} --VERSION ${params.VERSION} --DATASET ${params.DATASET}
-                '''
+                sh "python --version"
+                sh "python initial_data/runs.py --API_KEY ${params.API_KEY} --WORKSPACE ${params.WORKSPACE} --DATA_FOLDER ${params.DATA_FOLDER} --VERSION ${params.VERSION} --DATASET ${params.DATASET}"
+
             }
         }
 
