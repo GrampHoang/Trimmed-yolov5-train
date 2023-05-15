@@ -80,7 +80,7 @@ pipeline {
 
         stage('Training model') {
             steps {
-                {
+                script {
                     def DATA_FOLDERR = params.VERSION.split('-')[0]
                     sh "echo ${DATA_FOLDERR}"
                     sh "python train.py --img ${params.IMG} --batch ${params.BATCH} --epochs ${params.EPOCH} --data ${params.DATA_FOLDERR}-${params.VERSION}/data.yaml --weights ${params.WEIGHT}"
