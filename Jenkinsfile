@@ -78,7 +78,9 @@ pipeline {
                 success {
                     script { 
                         unzip zipFile: 'roboflow.zip', dir: 'roboflow', quiet: true
-                        sh "ls"
+                        sh '''
+                            chmod -R 777 roboflow
+                        '''
                     }
                 }
             }
