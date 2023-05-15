@@ -10,6 +10,13 @@ from roboflow import Roboflow
 rf = Roboflow(api_key="Zk1BC6WNlwGe7i2evhTG")
 project = rf.workspace("personal-d8mlf").project("mlops_member")
 dataset = project.version(2).download("yolov5")
+!pip install roboflow
+
+from roboflow import Roboflow
+rf = Roboflow(api_key="Zk1BC6WNlwGe7i2evhTG")
+project = rf.workspace("personal-d8mlf").project("mlops_member-tm4sk")
+dataset = project.version(3).download("yolov5")
+
 
 #!python train.py --img 480 --batch 1 --epochs 1 --data /DATA_FOLDER + "-" + VERSION/data.yaml --weights yolov5l.pt
 
