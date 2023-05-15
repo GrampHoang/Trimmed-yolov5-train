@@ -57,8 +57,12 @@ pipeline {
             steps {
                 script {
                     echo "Validating parameters..."
-                    if (!params.MODEL_NAME?.trim() || !params.DATA_URL?.trim()) {
+                    if (!params.MODEL_NAME?.trim()) {
                         error "MODEL_NAME is a mandatory parameter"
+                        return
+                    }
+                        if (!params.DATA_URL?.trim()) {
+                        error "DATA_URL is a mandatory parameter"
                         return
                     }
                 }
@@ -73,7 +77,7 @@ pipeline {
             post {
                 success {
                     script { 
-                        unzip zipFile: 'roboflow.zip', dir: 'roboflow' 
+                        unzip zipFile: 'roboflow.zip', dir: 'roboflow', quiet: true
                     }
                 }
             }
