@@ -30,11 +30,11 @@ pipeline {
 
     parameters {
         string(name: 'MODEL_NAME', description: 'The name for the model')
+        string(name: 'DATA_URL', description: 'The URL to load the dataset from Roboflow')
         string(name: 'IMG', description: 'The image size for training. Example 480', defaultValue: "480")
         string(name: 'BATCH', description: 'The number to build at a time. Example 1', defaultValue: "1")
         string(name: 'EPOCH', description: 'The number of training for model. Example 1', defaultValue: "1")
         string(name: 'WEIGHT', description: 'The weight to start traing from. Example yolov5l.pt', defaultValue: "yolov5n.pt")
-        string(name: 'DATA_URL', description: 'The URL to load the dataset from Roboflow')
     }
     options {
         timeout(time: 22, unit: 'HOURS')
@@ -57,7 +57,7 @@ pipeline {
             steps {
                 script {
                     echo "Validating parameters..."
-                    if (!params.MODEL_NAME?.trim()) {
+                    if (!params.MODEL_NAME?.trim() || !params.DATA_URL?.trim()) {
                         error "MODEL_NAME is a mandatory parameter"
                         return
                     }
