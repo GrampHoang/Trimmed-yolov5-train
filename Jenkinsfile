@@ -77,7 +77,8 @@ pipeline {
             post {
                 success {
                     script { 
-                        sh "unzip roboflow.zip && chmod -R 777 .; rm roboflow.zip"
+                        unzip zipFile: "roboflow.zip", quiet: true
+                        sh "chmod -R 777 .; rm roboflow.zip"
                     }
                 }
             }
@@ -86,7 +87,7 @@ pipeline {
         stage('Training model') {
             steps {
                 script {
-                    sh "python train.py --img ${params.IMG} --batch ${params.BATCH} --epochs ${params.EPOCH} --data roboflow/data.yaml --weights ${params.WEIGHT}"
+                    sh "python train.py --img ${params.IMG} --batch ${params.BATCH} --epochs ${params.EPOCH} --data data.yaml --weights ${params.WEIGHT}"
                 }
             }
             post {
