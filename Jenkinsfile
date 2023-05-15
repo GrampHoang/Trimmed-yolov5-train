@@ -73,7 +73,7 @@ pipeline {
             post {
                 success {
                     script { 
-                        unzip zipFile 'roboflow.zip', dir: 'roboflow' 
+                        unzip zipFile: 'roboflow.zip', dir: 'roboflow' 
                     }
                 }
             }
