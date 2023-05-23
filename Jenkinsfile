@@ -44,7 +44,6 @@ pipeline {
 
     environment {
         // Copy the Jenkins build number of Suite-Build job into a global iPension environment variable
-        MLOPS_TRAIN_NUMBER = "${env.BUILD_NUMBER}"
         ARCHIV = "${params.MODEL_NAME}"+'.tar.gz'
         // Define default job parameters
         propagate = true
