@@ -1,4 +1,5 @@
 #!/usr/bin/env groovy
+library 'mlops-shared-lib'
 
 def dockerBuild(String branch, String stageName,String trainNumber, String stageResult = false, String propagate = true) {
     try {
@@ -64,6 +65,8 @@ pipeline {
                         error "DATA_URL is a mandatory parameter"
                         return
                     }
+                    //Check semantic rule for parameter
+                    semanticVersionCheck(this,params.MODEL_NAME)
                 }
             }
         }
