@@ -110,7 +110,7 @@ pipeline {
                             "files": [
                                 {
                                     "pattern": "${ARCHIV}", 
-                                    "target": "mlops-trained-models/${MODEL_NAME}/${MY_DATE_TIME}.tar.gz"
+                                    "target": "${env.MODEL_REPO}/${MODEL_NAME}/${MY_DATE_TIME}.tar.gz"
                                 }
                             ]
                         }"""
@@ -122,7 +122,7 @@ pipeline {
                             "files": [
                                 {
                                     "pattern": "${ARCHIV}", 
-                                    "target": "mlops-trained-models/${MODEL_NAME}/latest.tar.gz"
+                                    "target": "${env.MODEL_REPO}/${MODEL_NAME}/latest.tar.gz"
                                 }
                             ]
                         }"""
