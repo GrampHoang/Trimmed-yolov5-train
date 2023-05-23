@@ -1,3 +1,4 @@
+import json
 import pymongo
 import sys
 import os
@@ -20,7 +21,8 @@ parser.add_argument("--version", help="Add version")
 args = parser.parse_args()
 
 client = pymongo.MongoClient(
-    "mongodb+srv://haicauancarem:tiachop1@cluster0.dd88nyj.mongodb.net/?retryWrites=true&w=majority")
+    "mongodb+srv://haicauancarem:tiachop1@cluster0.dd88nyj.mongodb.net/?retryWrites=true&w=majority", 
+    connectTimeoutMS=300000)
 mydb = client["MLOpsData"]
 mycol = mydb["weight"]
 # fs = gridfs.GridFS(mydb)
@@ -45,7 +47,6 @@ versionArray = []
 for element in y:
     versionArray += [element["version"]]
 
-import json
 
 data = {"version_array": versionArray}
 
