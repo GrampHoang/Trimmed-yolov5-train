@@ -44,9 +44,13 @@ pipeline {
     }
 
     environment {
+        def SERVER_ID="Jfrog-mlops-model-store"
         // Copy the Jenkins build number of Suite-Build job into a global iPension environment variable
-        ARCHIV = "${params.MODEL_NAME}"+'.tar.gz'
+        def ARCHIV = "${params.MODEL_NAME}"+'.tar.gz'
+        def WEIGHT_PATH = "${params.WEIGHT}"
         // Define default job parameters
+        def model_weight=""
+        def useYoloModel=true
         propagate = true
 
     }
@@ -56,25 +60,81 @@ pipeline {
         stage("Precheck pipeline parameters"){
             steps {
                 script {
-                    echo "Validating parameters..."
-                    if (!params.MODEL_NAME?.trim()) {
-                        error "MODEL_NAME is a mandatory parameter"
-                        return
+                    withCredentials([
+                        usernamePassword(
+                            credentialsId: 'artifactory-chih',
+                            usernameVariable: 'USERNAME',
+                            passwordVariable: 'PASSWORD'
+                        )
+                    ]){
+                        echo "Validating parameters..."
+                        if (!params.MODEL_NAME?.trim()) {
+                            error "MODEL_NAME is a mandatory parameter"
+                            return
+                        }
+                            if (!params.DATA_URL?.trim()) {
+                            error "DATA_URL is a mandatory parameter"
+                            return
+                        }
+                        //Check semantic rule for parameter
+                        semanticVersionCheck(this,params.MODEL_NAME)
+                        
+                        echo "Checking the weight to be trained from"
+                        if (!WEIGHT_PATH.contains("yolo")){
+                            model_weight= WEIGHT_PATH.split(':')
+                            if(model_weight.size() == 2){
+                                sh "echo Checking on model: ${WEIGHT_PATH}"
+                                sh "curl -u ${USERNAME}:${PASSWORD} -f -I https://${env.SERVER_URL}/artifactory/${env.MODEL_REPO}/${model_weight[0]}/${model_weight[1]}.tar.gz"
+                                useYoloModel=false
+                            }else {
+                                error "weight input failed!"
+                                return 
+                            }
+                        }
                     }
-                        if (!params.DATA_URL?.trim()) {
-                        error "DATA_URL is a mandatory parameter"
-                        return
-                    }
-                    //Check semantic rule for parameter
-                    semanticVersionCheck(this,params.MODEL_NAME)
+                }
+            }
+        }
+
+        stage("Get weight to train from"){
+            when {
+                expression {
+                    return !useYoloModel
+                }
+            }
+            steps {             
+                script {
+                    def server = Artifactory.server(SERVER_ID)                   
+                    sh "echo Download model: ${model_weight[0]} version: ${model_weight[1]}"                       
+                        // Perform the desired steps for each value
+                    def downloadSpec = """{
+                            "files": [
+                                {
+                                    "pattern": "${env.MODEL_REPO}/${model_weight[0]}/${model_weight[1]}.tar.gz",
+                                    "target": "./"
+                                }
+                            ]
+                    }"""
+                    def buildInfo = server.download(downloadSpec)
+                    sh """
+                            cd ${model_weight[0]}
+                            chmod 777 ${model_weight[1]}.tar.gz
+                            tar -xvf ${model_weight[1]}.tar.gz
+                            mv train/exp/weights/best.pt ../${model_weight[0]}.pt
+                            
+                        """
+                    sh "chmod 777 ${model_weight[0]}.pt"
+                    WEIGHT_PATH="${model_weight[0]}.pt"
                 }
             }
         }
 
         stage('Initial training data') {
-            steps {
-                sh "python --version"
-                sh "curl -f -L ${params.DATA_URL} > roboflow.zip"
+            steps {             
+                script {
+                    sh "python --version"
+                    sh "curl -f -L ${params.DATA_URL} > roboflow.zip"
+                }
             }
             post {
                 success {
@@ -89,7 +149,7 @@ pipeline {
         stage('Training model') {
             steps {
                 script {
-                    sh "python train.py --img ${params.IMG} --batch ${params.BATCH} --epochs ${params.EPOCH} --data data.yaml --weights ${params.WEIGHT}"
+                    sh "python train.py --img ${params.IMG} --batch ${params.BATCH} --epochs ${params.EPOCH} --data data.yaml --weights ${WEIGHT_PATH}"
                 }
             }
             post {
