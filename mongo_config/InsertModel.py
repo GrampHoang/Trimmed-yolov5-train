@@ -16,19 +16,20 @@ import json
 parser = argparse.ArgumentParser()
 
 parser.add_argument("--resultFilePath",
-                    help="Add path to opt.yaml file")  
+                    help="Add path to opt.yaml file")
 parser.add_argument("--modelName", help="Add model name")
 parser.add_argument("--img", help="Add image size")
 parser.add_argument("--batch", help="Add batch")
 parser.add_argument("--epochs", help="Add epoch")
-
 parser.add_argument("--version", help="Add version")
+parser.add_argument("--dataUrl", help="Add Roboflow data url")
+parser.add_argument("--weightFile", help="Add weightFile")
 
 args = parser.parse_args()
 
 
 client = pymongo.MongoClient(
-    "mongodb+srv://haicauancarem:tiachop1@cluster0.dd88nyj.mongodb.net/?retryWrites=true&w=majority", 
+    "mongodb+srv://haicauancarem:tiachop1@cluster0.dd88nyj.mongodb.net/?retryWrites=true&w=majority",
     connectTimeoutMS=300000)
 mydb = client["MLOpsData"]
 mycol = mydb["weight"]
@@ -46,6 +47,8 @@ resultFilePath = args.resultFilePath
 img = args.img
 batch = args.batch
 epochs = args.epochs
+dataUrl = args.dataUrl
+weightFile = args.weightFile
 
 
 modelName = args.modelName
@@ -66,11 +69,10 @@ os.remove("config.json")
 #                "modelName": 1, "version": 1}).sort("version", 1)
 
 
-
 x = mycol.insert_one({"id": id,
                       "resultFile": output,
                       "date": current_time, "binDate": binDate, "modelName": modelName,
                       "img": img, "batch": batch, "epochs": epochs,
-                      "version": version, "deployed": False })
+                      "version": version, "weightFile": weightFile, "dataUrl": dataUrl, "deployed": False})
 
 myid.find_one_and_update({}, {'$set': {"id": id + 1}})
