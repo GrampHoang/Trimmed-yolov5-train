@@ -11,7 +11,7 @@ import yaml
 import json
 
 
-# py InsertModel.py --resultFilePath opt.yaml --modelName testmodel --img 640 --batch 20 --epochs 6 --version 2.1
+# py InsertModel.py --resultFilePath opt.yaml --modelName testmodel --img 640 --batch 20 --epochs 6 --version 2.1 --outputFile versionList.json
 
 parser = argparse.ArgumentParser()
 
@@ -67,6 +67,10 @@ with open('config.json', 'w') as json_file:
 output = json.dumps(json.load(open('config.json')), indent=2)
 os.remove("config.json")
 
+with open(outputFile) as f:
+    # Load the JSON content into a variable
+    outputFileData = json.load(f)
+
 # y = mycol.find({"modelName": modelName}, {
 #                "modelName": 1, "version": 1}).sort("version", 1)
 
@@ -75,6 +79,6 @@ x = mycol.insert_one({"id": id,
                       "resultFile": output,
                       "date": current_time, "binDate": binDate, "modelName": modelName,
                       "img": img, "batch": batch, "epochs": epochs,
-                      "version": version, "weightFile": weightFile, "dataUrl": dataUrl, "outputFile": outputFile, "deployed": False})
+                      "version": version, "weightFile": weightFile, "dataUrl": dataUrl, "outputFile": outputFileData, "deployed": False})
 
 myid.find_one_and_update({}, {'$set': {"id": id + 1}})
