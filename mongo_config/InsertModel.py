@@ -24,6 +24,7 @@ parser.add_argument("--epochs", help="Add epoch")
 parser.add_argument("--version", help="Add version")
 parser.add_argument("--dataUrl", help="Add Roboflow data url")
 parser.add_argument("--weightFile", help="Add weightFile")
+parser.add_argument("--outputFile", help="Add output")
 
 args = parser.parse_args()
 
@@ -49,6 +50,7 @@ batch = args.batch
 epochs = args.epochs
 dataUrl = args.dataUrl
 weightFile = args.weightFile
+outputFile = args.outputFile
 
 
 modelName = args.modelName
@@ -73,6 +75,6 @@ x = mycol.insert_one({"id": id,
                       "resultFile": output,
                       "date": current_time, "binDate": binDate, "modelName": modelName,
                       "img": img, "batch": batch, "epochs": epochs,
-                      "version": version, "weightFile": weightFile, "dataUrl": dataUrl, "deployed": False})
+                      "version": version, "weightFile": weightFile, "dataUrl": dataUrl, "outputFile": outputFile, "deployed": False})
 
 myid.find_one_and_update({}, {'$set': {"id": id + 1}})
