@@ -288,10 +288,31 @@ def run(
         for i, c in enumerate(ap_class):
             LOGGER.info(pf % (names[c], seen, nt[c], p[i], r[i], ap50[i], ap[i]))
     
-    with open('train_result.txt', 'w') as file:
-        if (verbose or (nc < 50 and not training)) and nc > 1 and len(stats):
-            for i, c in enumerate(ap_class):
-                print(pf % (names[c], seen, nt[c], p[i], r[i], ap50[i], ap[i]), file=file)
+    result = {
+        'train_result': {}
+    }
+
+    if (verbose or (nc < 50 and not training)) and nc > 1 and len(stats):
+        jsseen = int(seen)
+        jsnt = nt.astype(int).tolist()
+        jsp = p.astype(float).tolist()
+        jsr = r.astype(float).tolist()
+        jsap50 = ap50.astype(float).tolist()
+        jsap = ap.astype(float).tolist()
+        for i, c in enumerate(ap_class):
+            class_name = names[c]
+            result['train_result'][class_name] = {
+                'Images  ': jsseen,
+                'Instances': jsnt[c],
+                'P': jsp[i],
+                'R': jsr[i],
+                'mAP50': jsap50[i],
+                'mAP50-95': jsap[i]
+            }
+
+    with open('output.json', 'w') as file:
+        json.dump(result, file, indent=4)
+
                 
     # Print speeds
     t = tuple(x.t / seen * 1E3 for x in dt)  # speeds per image
