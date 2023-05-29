@@ -11,7 +11,7 @@ import yaml
 import json
 
 
-# py InsertModel.py --resultFilePath opt.yaml --modelName testmodel --img 640 --batch 20 --epochs 6 --version 2.1 --outputFile versionList.json
+# py InsertModel.py --resultFilePath opt.yaml --modelName testmodel --img 640 --batch 20 --epochs 6 --version 2.1 --outputFile output.json
 
 parser = argparse.ArgumentParser()
 
