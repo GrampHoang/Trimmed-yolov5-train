@@ -31,7 +31,7 @@ args = parser.parse_args()
 
 client = pymongo.MongoClient(
     "mongodb+srv://haicauancarem:tiachop1@cluster0.dd88nyj.mongodb.net/?retryWrites=true&w=majority",
-    connectTimeoutMS=300000)
+    connectTimeoutMS=3000000)
 mydb = client["MLOpsData"]
 mycol = mydb["weight"]
 myid = mydb["seqs"]
