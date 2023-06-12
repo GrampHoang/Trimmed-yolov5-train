@@ -207,6 +207,7 @@ pipeline {
         }
 
         always {
+            sh "python ./mongo_config/UpdateTrainResult.py --modelName ${MODEL_NAME}"
             cleanWs()
         }
     }
