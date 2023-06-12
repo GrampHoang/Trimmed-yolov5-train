@@ -11,11 +11,12 @@ import yaml
 import json
 
 
-# py UpdateTrainResult.py --modelName testmodel
+# py UpdateTrainResult.py --modelName testmodel --status success
 
 parser = argparse.ArgumentParser()
 
 parser.add_argument("--modelName", help="Add model name")
+parser.add_argument("--status", help="Add train result status")
 
 
 args = parser.parse_args()
@@ -27,12 +28,16 @@ client = pymongo.MongoClient(
 )
 mydb = client["MLOpsData"]
 mycol = mydb["training"]
+trainStatus = mydb["lasttrainstatus"]
 
 modelName = args.modelName
+status = args.status
 
 result = mycol.find_one({})
 temp = result["modelNameList"]
 temp = list(filter(lambda element: element != modelName, temp))
 mycol.find_one_and_update({}, {'$set': {"modelNameList": temp}})
+
+trainStatus.find_one_and_update({"modelName": modelName}, {'$set': {"lastTrain": status}}, upsert=True)
 
 
