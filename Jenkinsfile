@@ -209,12 +209,10 @@ pipeline {
     post {
         success {
             slackSend(color:"good", message:"To: <!here|here>, Build deployed successfully - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
-            sh "python ./mongo_config/UpdateTrainResult.py --modelName ${MODEL_NAME} --status success"
         }
 
         failure {
             slackSend(color:"#ff0000",message: "To: <!channel|channel>, Build failed  - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
-            sh "python ./mongo_config/UpdateTrainResult.py --modelName ${MODEL_NAME} --status fail"
         }
 
         always {
