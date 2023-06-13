@@ -194,6 +194,13 @@ pipeline {
                     sh "python ./mongo_config/InsertModel.py --resultFilePath ./runs/train/exp/opt.yaml --modelName ${MODEL_NAME} --img ${params.IMG} --batch ${params.BATCH} --epochs ${params.EPOCH} --version ${MY_DATE_TIME} --weightFile ${params.WEIGHT} --dataUrl ${params.DATA_URL} --outputFile output.json"
                 }
             }
+            success {
+                sh "python ./mongo_config/UpdateTrainResult.py --modelName ${MODEL_NAME} --status success"
+            }
+
+            failure {
+                sh "python ./mongo_config/UpdateTrainResult.py --modelName ${MODEL_NAME} --status fail"
+            }
         }
 
     }
